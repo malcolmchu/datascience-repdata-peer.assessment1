@@ -4,8 +4,9 @@
 ## Required Packages:
 
 ```r
-library(ggplot2)
 library(Hmisc)
+library(ggplot2)
+library(lattice)
 ```
 
 
@@ -157,11 +158,12 @@ dataImputed$dayType <- ifelse(
 
 ```r
 averagesImputed <- aggregate(steps ~ interval + dayType, data=dataImputed, mean)
-ggplot(dataImputed, aes(x=interval, y=steps)) + 
-    geom_line() + 
-    facet_grid(dayType ~ .) +
-    xlab("5-minute interval") + 
-    ylab("Average number of steps taken")
+
+xyplot(steps ~ interval | factor(dayType), data=averagesImputed, 
+       type = "l", layout = c(1, 2),
+       main="Average number of steps taken (Weekend / Weekday)",
+       xlab="5-minute interval",
+       ylab="Average number of steps taken")
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-14-1.png) 

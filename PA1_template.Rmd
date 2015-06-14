@@ -8,8 +8,9 @@ output:
 
 ## Required Packages:
 ```{r warning=FALSE, message=FALSE}
-library(ggplot2)
 library(Hmisc)
+library(ggplot2)
+library(lattice)
 ```
 
 
@@ -108,9 +109,10 @@ dataImputed$dayType <- ifelse(
 #### 2. Make a panel plot containing a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis)
 ```{r message=FALSE}
 averagesImputed <- aggregate(steps ~ interval + dayType, data=dataImputed, mean)
-ggplot(dataImputed, aes(x=interval, y=steps)) + 
-    geom_line() + 
-    facet_grid(dayType ~ .) +
-    xlab("5-minute interval") + 
-    ylab("Average number of steps taken")
+
+xyplot(steps ~ interval | factor(dayType), data=averagesImputed, 
+       type = "l", layout = c(1, 2),
+       main="Average number of steps taken (Weekend / Weekday)",
+       xlab="5-minute interval",
+       ylab="Average number of steps taken")
 ```
